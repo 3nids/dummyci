@@ -4,6 +4,10 @@ on:
   push:
     tags:
       - final-*
+    branches:
+      - master
+    paths:
+      - .github/workflows/build-docker.yml
       
   schedule:
     # runs every day
