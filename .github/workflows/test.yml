@@ -27,11 +27,6 @@ jobs:
           else
             echo "::set-output name=matrix::{\"branch\":[\"master\", \"release-3_16\", \"release-3_18\"]}"
           fi        
-     
-      - run: |
-          echo ${XXX}
-        env:
-          XXX: ${{ fromJSON(steps.define-matrix.outputs.matrix) }}
         
   build-docker:
     runs-on: ubuntu-latest
