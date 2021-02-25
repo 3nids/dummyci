@@ -25,7 +25,7 @@ jobs:
           if [[ "${GITHUB_REF}" =~ ^refs/tags ]]; then
             echo "::set-output name=matrix::[${GITHUB_REF##*/}]"
           else
-            echo "::set-output name=matrix::['master', 'release-3_16', 'release-3_18']"
+            echo "::set-output name=matrix::[master, release-3_16, release-3_18]"
           fi        
         
   build-docker:
@@ -34,7 +34,7 @@ jobs:
 
     strategy:
       matrix:
-        branch: ${{ needs.define-strategy.outputs.matrix }}
+        branch: fromJSON( ${{ needs.define-strategy.outputs.matrix }} )
         
     steps:
       - name: echo ${{ matrix.branch }}
