@@ -34,7 +34,7 @@ jobs:
 
     strategy:
       matrix:
-        branch: fromJSON( ${{ needs.define-strategy.outputs.matrix }} )
+        branch: fromJSON( "${{ needs.define-strategy.outputs.matrix }}" )
         
     steps:
       - name: echo ${{ matrix.branch }}
