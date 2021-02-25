@@ -1,0 +1,45 @@
+name: test
+
+on:
+  push:
+    tags:
+      - final-*
+      
+  schedule:
+    # runs every day
+    - cron: '0 0 * * *'
+    
+  workflow_dispatch:
+    # POST https://api.github.com/repos/qgis/QGIS/actions/workflows/2264135/dispatches:
+
+jobs:
+  define-strategy:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      matrix: ${{ steps.define-matrix.outputs.matrix }}
+    
+    steps:
+      - id: define-matrix
+        run: |
+          if [[ "${GITHUB_REF}" =~ ^refs/tags ]]; then
+            echo "::set-output name=matrix::[${GITHUB_REF##*/}]"
+          else
+            echo "::set-output name=matrix::[master, release-3_16, release-3_18]"
+          fi        
+        
+  build-docker:
+    runs-on: ubuntu-latest
+    needs: define-strategy
+    env:
+
+    strategy:
+      matrix:
+        branch: ${{ needs.define-strategy.outputs.matrix }}
+        
+    steps:
+      - name: echo ${{ matrix.branch }}
+        run: echo $branch
+        env:
+          branch: ${{ matrix.branch }}
+      
