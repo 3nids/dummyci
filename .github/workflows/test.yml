@@ -23,15 +23,15 @@ jobs:
       - id: define-matrix
         run: |
           if [[ "${GITHUB_REF}" =~ ^refs/tags ]]; then
-            echo '::set-output name=matrix::{"matrix": ["'${GITHUB_REF##*/}'"]}'
+            echo '::set-output name=matrix::{\"branch\":[\"${GITHUB_REF##*/}\"]}"
           else
-            echo '::set-output name=matrix::{"matrix": ["master", "release-3_16", "release-3_18"]}'
+            echo "::set-output name=matrix::{\"branch\":[\"master\", \"release-3_16\", \"release-3_18\"]}"
           fi        
      
       - run: |
           echo ${XXX}
         env:
-          XXX: ${{ fromJSON(steps.define-matrix.outputs.matrix).matrix }}
+          XXX: ${{ fromJSON(steps.define-matrix.outputs.matrix) }}
         
   build-docker:
     runs-on: ubuntu-latest
