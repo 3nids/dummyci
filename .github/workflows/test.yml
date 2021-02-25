@@ -23,7 +23,7 @@ jobs:
       - id: define-matrix
         run: |
           if [[ "${GITHUB_REF}" =~ ^refs/tags ]]; then
-            echo '::set-output name=matrix::{\"branch\":[\"${GITHUB_REF##*/}\"]}"
+            echo "::set-output name=matrix::{\"branch\":[\"${GITHUB_REF##*/}\"]}"
           else
             echo "::set-output name=matrix::{\"branch\":[\"master\", \"release-3_16\", \"release-3_18\"]}"
           fi        
