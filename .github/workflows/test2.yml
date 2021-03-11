@@ -27,6 +27,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+  test2:
+    needs: build-sdk
+    runs-on: macOS-latest
+    steps:
+      - run: echo ${XXX}
+        env:
+          XXX: ${{ needs.build-sdk.outputs.matrix }}
+      
   publish-sdk:
     needs: build-sdk
     runs-on: macOS-latest
