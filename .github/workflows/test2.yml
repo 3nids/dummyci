@@ -29,7 +29,7 @@ jobs:
     runs-on: macOS-latest
     strategy:
       fail-fast: false
-      matrix: ${{ needs.build-sdk.strategy.matrix }}
+      matrix: ${{ jobs.build-sdk.strategy.matrix }}
 
     steps:
       - run: echo ${QTVERSION}
