@@ -5,9 +5,11 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    
+env:
+  QT_VERSIONS: '["5.15.1"]'
+  IOS_DEPLOYMENT_ARCHITECTURE: '["arm64", "x86_64"]'
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 jobs:
   build-sdk:
 
@@ -15,8 +17,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt-version: ['5.15.1']
-        ios-deployment-architecture: ['arm64', 'x86_64']
+        qt-version: ${{ fromJSON( env.QT_VERSIONS ) }}
+        ios-deployment-architecture: ${{ fromJSON( env.IOS_DEPLOYMENT_ARCHITECTURE ) }}
         include:
           - qt-version: '5.15.1'
             ios-deployment-target: '12.0'
@@ -42,8 +44,13 @@ jobs:
     runs-on: macOS-latest
 
     strategy:
-      matrix: ${{ fromJSON( needs.build-sdk.outputs.matrix ) }}
-
+      matrix: 
+        qt-version: ${{ fromJSON( env.QT_VERSIONS ) }}
+        ios-deployment-architecture: ${{ fromJSON( env.IOS_DEPLOYMENT_ARCHITECTURE ) }}
+        include:
+          - qt-version: '5.15.1'
+            ios-deployment-target: '12.0'      
+      
     steps:
       - run: echo ${QTVERSION}
         env:
